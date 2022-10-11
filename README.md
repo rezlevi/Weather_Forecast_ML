@@ -1,8 +1,8 @@
 # Big-Project.
 
-Ez a repository az Eszterházy Károly Katolikus Egyetem 2022. 1. félévi alkalmazások fejlesztése projekt labor gyakorlatához tartozik.
 
-## Csapattagok
+
+## Members
 
 - [Benke Balázs Bálint](https://github.com/benkebalazs1337)
 - [Nagy Péter Axel](https://github.com/Axel0103/)
