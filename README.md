@@ -8,4 +8,5 @@
 - [Nagy Péter Axel](https://github.com/Axel0103/)
 - [Réz Levente János](https://github.com/rezlevi)
 - [Stanga Péter István](https://github.com/StangaPeter)
+- [Trello](https://trello.com/b/QYq8GSDG/big-project-i)
 
