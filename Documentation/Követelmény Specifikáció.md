@@ -33,6 +33,9 @@ Tervünk egy olyan piacképes szoftver fejlesztése, mely az elmúlt napok adata
 átlag, maximum, minimum hőmérsékletét, illetve a napi hőingást becsülni.
 Megfelelően működő rendszer komoly hatással lehet a mindennapjainkra.
 
-## 6. A rendszerre vonatkozó szabályok
-
-## 7. Követelménylista
+## 6. Követelménylista
+K1 - Könnyű, laikusok számára is egyszerű használhatóság
+K2 - Adatok megfelelő kezelése
+K3 - Rövid  futási idő
+K4 - Pontos előrejelzés 
+K5 - Könnyen karbantartható
