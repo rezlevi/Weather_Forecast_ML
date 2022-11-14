@@ -13,7 +13,11 @@ Egy valóban jó, gépi tanulást használó szoftver akár a klímaváltozás e
 kutatásokban felhasználva világosabb képet kaphatunk az időjárás alakulásának törvényszerűségeiről.
 
 ## 3. Vágyálom rendszer
-
+Tervünk egy olyan rendszer létrehozása, mely pontosan képes megjósolni az előző nap adatai alapján
+a következő nap átlag, maximum, minimum hőmérsékletét, illetve a napi hőingást, továbbá könnyen,
+akár laikusok számára is használható.
+Természetesen az időjárás pontos előrejelzésétől még igen messze vagyunk, azonban 
+szeretnénk, ha ez a szoftver lenne kategóriájában a piacon elérhető legjobb eredményeket nyújtó rendszer.
 
 ## 4. Jelenlegi üzleti folyamatok modellje
 A mai világban egyre sürgetőbb kérdéssé vált, hogy miként kezelhető a klímaváltozás társadalmi, illetve gazdasági szempontból is.
