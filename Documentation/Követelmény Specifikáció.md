@@ -5,6 +5,7 @@ A programunk Az elmúlt tíz nap adata alapján igyekszik megjósolni a követke
 Az előrőjelzéshez minden nap négy adatát használjuk fel: az átlag, a maximum, a minimum hőmérsékletet,
 illetve a napi hőingást.
 Ugyanezeket az adatokat fogja a szoftverünk egy nappal előre megbecsülni.
+![Áttekintés](https://user-images.githubusercontent.com/113850216/201756556-dc28bac6-ca5f-4eb2-9030-c6addab32d25.png)
 
 ## 2. Jelenlegi helyzet
 Időjárás előrejelző rendszerünkre azért van szükség, mert megítélésünk szerint bár komoly igény lenne rá
