@@ -12,7 +12,11 @@ terén is felhasználható, és amely egyre jobb és jobb lehetőségekkel kecse
 Szeretnénk tehát egy egyre fontosabbá váló kérdést egy egyre gyorsabban fejlődő területtel kezelni.
 
 ## 4. Igényelt üzleti folyamatok modellje
-
+Célunk egy időjárás előrejelző rendszer fejlesztése, mely gépi tanuláson alapszik.
+Egy korábbi projekt eredményeit figyelembe véve igyekszünk javítani a pontosságon, illetve több adatot jósolni.
+Tervünk egy olyan piacképes szoftver fejlesztése, mely az elmúlt napok adatai alapján képes a következő nap
+átlag, maximum, minimum hőmérsékletét, illetve a napi hőingást becsülni.
+Megfelelően működő rendszer komoly hatással lehet a mindennapjainkra.
 
 ## 5. A rendszerre vonatkozó szabályok
 - A 
