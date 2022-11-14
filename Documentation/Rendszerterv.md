@@ -40,10 +40,17 @@ Az adatbázis tartalmát nem módosítjuk, a fejlesztés során csak olvasni fog
 A 
 
 ## Tesztterv
+A szoftver fejlesztésének végén történik a tesztelés, mely során a követelmény specifikáció
+követelménylista pontjában szereplő elemek működését vizsgáljuk.
+A tesztelés folyamatáról, illetve annak eredményéről részletes jegyzőkönyv készül.
+A tesztelés során az egyes elemeken haladunk végig, ha valami nem működik kijavítjuk és 
+újra azt a funkciót teszteljük egészen addig, míg nem lesz jó.
+Csak ezután megyünk tovább. A folyamatot az alábbi ábra szemlélteti:
 
-A
+![Tesztelési terv](https://user-images.githubusercontent.com/113850216/201758430-fb3ea6f7-2838-4a23-b37b-035ed1159b01.png)
 
 ## Karbantartási terv
+
  - A
 
 
