@@ -7,6 +7,10 @@ illetve a napi hőingást.
 Ugyanezeket az adatokat fogja a szoftverünk egy nappal előre megbecsülni.
 
 ## 2. Jelenlegi helyzet
+Időjárás előrejelző rendszerünkre azért van szükség, mert megítélésünk szerint bár komoly igény lenne rá
+társadalmi és gazdasági szempontból is, mégis az eddig kifejlesztett szoftverek működése nem megfelelő.
+Egy valóban jó, gépi tanulást használó szoftver akár a klímaváltozás elleni harchoz is hozzájárulhatna azáltal, hogy
+kutatásokban felhasználva világosabb képet kaphatunk az időjárás alakulásának törvényszerűségeiről.
 
 ## 3. Vágyálom rendszer
 
