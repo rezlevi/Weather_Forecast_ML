@@ -11,26 +11,26 @@
 - K03 Machine Learning alkalmazása Tensorflow segítségével
 - K04 Gráfok alkalmazása szemléltetésképpen
     
-## 4. Forgatókönyvek
-
-  
-  
-  ## 5. Megfeleltetés
+  ## 4. Megfeleltetés
   
   
   
-  ## 6. Használati esetek 
+  ## 5. Használati esetek 
   - Mivel nincs megkötve az, hogy legyen GUI vagy bármiféle felhasználókezelés, ezért egy egyszerű, kódblokkonként futtatható Google Colab "Füzetben" lesz megvalósítva az összes funkcionalitás. Ezek futtathatóak elsősorban egyenként, sorrendben haladva.
   - Célszerű Google Drive használata, abból kifolyólag, hogy 3 fejlesztő van. Így akár egyszerre dolgozhat az összes fejlesztő.
  
-  ## 7.  Jelenlegi üzleti folyamatok
-  
+  ## 6.  Jelenlegi üzleti folyamatok
+  A mai világban egyre sürgetőbb kérdéssé vált, hogy miként kezelhető a klímaváltozás társadalmi, illetve gazdasági szempontból is.
+  Ez tagadhatatlanul mindnyájunk életére befolyással van, így egyre többen próbálnak megoldást találni a kialakult helyzetre.
+  Az is tény, hogy a gépi tanulás korunk egyik igen gyorsan fejlődő területe, mely az időjárási jelenségekkel kapcsolatos kutatások
+  terén is felhasználható, és amely egyre jobb és jobb lehetőségekkel kecsegtet.
+  Szeretnénk tehát egy egyre fontosabbá váló kérdést egy egyre gyorsabban fejlődő területtel kezelni.
 
 
-  ## 8. Igényelt üzleti folyamatok
+  ## 7. Igényelt üzleti folyamatok
   
   
-  ## 9. Fogalomszótár
+  ## 8. Fogalomszótár
 
 - Implementálás: Megvalósítás
 - Machine Learning: Gépi tanulás
