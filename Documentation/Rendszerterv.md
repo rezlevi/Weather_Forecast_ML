@@ -22,22 +22,13 @@ A rendszer célja Machine Learning segítségével megvalósítandó időjárás
 
 
 ## Funkcionális terv
-   - A
-
-## Fizikai környezet
-   - A
    
-## Architekturális terv
-   - A
-
 ## Adatbázis terv leírása
 A szoftver fejlesztése során egy hőmérsékleti adatokat tároló adatbázist fogunk használni.
 Az adatbázis egy rekordja egy nap adatait tartalmazza, köztük a számunkra releváns napi átlag,
 maximum, illetve minimum hőmérsékleteket.
 Az adatbázis tartalmát nem módosítjuk, a fejlesztés során csak olvasni fogunk belőle.
 
-## Telepítési terv
-A 
 
 ## Tesztterv
 A szoftver fejlesztésének végén történik a tesztelés, mely során a követelmény specifikáció
@@ -50,7 +41,10 @@ Csak ezután megyünk tovább. A folyamatot az alábbi ábra szemlélteti:
 ![Tesztelési terv](https://user-images.githubusercontent.com/113850216/201758430-fb3ea6f7-2838-4a23-b37b-035ed1159b01.png)
 
 ## Karbantartási terv
-
- - A
+A rendszerünket természetesen nem engedjük el a fejlesztési folyamat legvégén sem.
+A sikeres kiadást követően újabb verziók fejlesztése a céunk, melynek alapja
+a korábbi rendszer.
+Továbbá, ha egy megrendelőnknek teljesíthető modosítási igénye merülne fel,
+igyekszünk úgy alakítani a rendszert, hogy az neki megfeleljen.
 
 
