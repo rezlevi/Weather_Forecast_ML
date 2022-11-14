@@ -6,6 +6,8 @@ Az előrőjelzéshez minden nap négy adatát használjuk fel: az átlag, a maxi
 illetve a napi hőingást.
 Ugyanezeket az adatokat fogja a szoftverünk egy nappal előre megbecsülni.
 
+![https://imgur.com/a/FVNk2sK](https://imgur.com/a/FVNk2sK)
+
 ## 2. Jelenlegi helyzet
 Időjárás előrejelző rendszerünkre azért van szükség, mert megítélésünk szerint bár komoly igény lenne rá
 társadalmi és gazdasági szempontból is, mégis az eddig kifejlesztett szoftverek működése nem megfelelő.
