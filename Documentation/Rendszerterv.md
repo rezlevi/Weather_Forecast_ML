@@ -31,7 +31,10 @@ A rendszer célja Machine Learning segítségével megvalósítandó időjárás
    - A
 
 ## Adatbázis terv leírása
-
+A szoftver fejlesztése során egy hőmérsékleti adatokat tároló adatbázist fogunk használni.
+Az adatbázis egy rekordja egy nap adatait tartalmazza, köztük a számunkra releváns napi átlag,
+maximum, illetve minimum hőmérsékleteket.
+Az adatbázis tartalmát nem módosítjuk, a fejlesztés során csak olvasni fogunk belőle.
 
 ## Telepítési terv
 A 
