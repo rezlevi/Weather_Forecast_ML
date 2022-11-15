@@ -28,6 +28,7 @@ Felelősségek, feladatok:
 
 
 ## Implementációs terv
+A program a colab.research.google segítségével fog készülni, ahol a TensorFlow nevű platformmal fogjuk fejleszteni a Machine Learning modellünket. Különböző python könyvtárak használata is elengedhetetlen lesz minden bizonnyal az adathalmazok kényelmes és átlátható kezelése valamint a modell teljesítményének elemzése/ vizualizálása érdekében. Az adathalmazokhoz terv szerint a Keras nevezetű API segítségével fogunk hozzájutni, de nem kizárt hogy másik API-t fogunk használni.
 
 
 ## Funkcionális terv
