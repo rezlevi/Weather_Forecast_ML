@@ -1,0 +1,742 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "collapsed_sections": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/rezlevi/Big-Project/blob/main/weather_forecast.ipynb_fresh\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Függvény a float ellenőrzéshez."
+      ],
+      "metadata": {
+        "id": "eid0LwZsygml"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "Irha9zbCRCfc"
+      },
+      "outputs": [],
+      "source": [
+        "# -*- coding: utf-8 -*-\n",
+        "from sklearn.metrics import mean_squared_error\n",
+        "\n",
+        "def is_float(s): #számok kiszűrése\n",
+        "    try:\n",
+        "        float(s)\n",
+        "        return True\n",
+        "    except ValueError:\n",
+        "        return False\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(is_float(\"alma\"))\n",
+        "print(is_float(\"-3.9\"))\n",
+        "for i in range(2,9):\n",
+        "  print(i,\"páros\" if i%2==0 else \"páratlan\")\n",
+        "for i in [\"szilva\", \"5\", \"3.14\", 3.14]:\n",
+        "  print(i,\"float\" if is_float(i) else \"nem float\")\n"
+      ],
+      "metadata": {
+        "id": "w9aMaI4xpxWJ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Google drive kezeléséhez import és mount"
+      ],
+      "metadata": {
+        "id": "3MgAAcrAypE_"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')\n"
+      ],
+      "metadata": {
+        "id": "6s5CdxnZTOub"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Adatok beolvasása, plusz paraméterek."
+      ],
+      "metadata": {
+        "id": "Z2TFZMnEyt_e"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "HIST=10\n",
+        "COLS=3\n",
+        "adatok_nyers=[sor.strip().split(sep=\";\") for sor in open(\"/content/drive/My Drive/Classroom/Tibor Tajti/neural net application/BP_d.csv\")]\n"
+      ],
+      "metadata": {
+        "id": "RrlO7boJTSFy"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "adatok_nyers[:5]"
+      ],
+      "metadata": {
+        "id": "ILCzwakdUt9n"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Adatokból kiválasztjuk a felhasználandókat. (avg, max, min hőmérséklet)"
+      ],
+      "metadata": {
+        "id": "QY1e4MSOy4cj"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print( len(adatok_nyers), adatok_nyers[0])\n",
+        "adatok=[[float(adat) if is_float(adat) else adat  for adat in sor[1:COLS+1] ] for sor in adatok_nyers[1:]]\n",
+        "print( len(adatok), adatok[0])\n",
+        "print( min([min(sor) for sor in adatok]), max([max(sor) for sor in adatok]))"
+      ],
+      "metadata": {
+        "id": "bBZlAv6hUo90"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Az adatokból kiválasztunk tanulási és tesztelési mintahalmazt."
+      ],
+      "metadata": {
+        "id": "r5aM_h4RzDda"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "train=adatok[:20000]\n",
+        "test=adatok[20000:25000]\n"
+      ],
+      "metadata": {
+        "id": "Eb3Jr2gGU_gI"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "train[:5], test[:5]"
+      ],
+      "metadata": {
+        "id": "xOsMH-VuViyg"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Az adatsorokból idősoros mintákat állítunk elő."
+      ],
+      "metadata": {
+        "id": "WlXWEjhlEbv0"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "train_x=(np.array([ train[i:i+HIST] for i in range(len(train)-HIST)])-8)/40 # első sortól az ötödikig\n",
+        "train_y=(np.array([ train[i+HIST] for i in range(len(train)-HIST)])-8)/40\n",
+        "#train_x=(np.array([ train[i:i+HIST] for i in range(0,19990)])+35)/40 # első sortól az ötödikig\n",
+        "#train_y=(np.array([ train[i+HIST] for i in range(0,19990)])+35)/40\n",
+        "test_x=(np.array([ test[i:i+HIST] for i in range(len(test)-HIST)])-8)/40 # első sortól az ötödikig\n",
+        "test_y=(np.array([ test[i+HIST] for i in range(len(test)-HIST)])-8)/40\n",
+        "\n",
+        "print(train_x.shape, train_y.shape)\n",
+        "print(train_x[0])\n",
+        "print(train_y[0])\n"
+      ],
+      "metadata": {
+        "id": "nwTxJio0Vfcg"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Egyszerű futtatás 50 leckével."
+      ],
+      "metadata": {
+        "id": "5cxc27N7HEBQ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print('train with tensorflow')\n",
+        "import tensorflow as tf\n",
+        "model = tf.keras.models.Sequential([\n",
+        "  tf.keras.layers.Flatten(input_shape=(HIST,COLS)),\n",
+        "  tf.keras.layers.Dense(100, activation='tanh'),\n",
+        "  tf.keras.layers.Dense(50, activation='tanh'),\n",
+        "  tf.keras.layers.Dense(COLS, activation='tanh')\n",
+        "])\n",
+        "\n",
+        "model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])\n",
+        "\n",
+        "mselst=[]\n",
+        "for _ in range(50):\n",
+        "  model.fit(train_x, train_y, epochs=1)\n",
+        "  y=model.predict(test_x)\n",
+        "  print('prediction MSE:', mean_squared_error(test_y, y))\n",
+        "  print('dummy MSE:', mean_squared_error(test_y[HIST:], test_y[HIST-1:-1]))\n",
+        "  mselst.append(mean_squared_error(test_y, y))\n"
+      ],
+      "metadata": {
+        "id": "PrvKhxj6TbV5"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Ugyanaz még egyszer 10 db tanulóval."
+      ],
+      "metadata": {
+        "id": "9eOi_efUzbf9"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print('train with tensorflow')\n",
+        "import tensorflow as tf\n",
+        "mselstlst=[]\n",
+        "for m in range(10):\n",
+        "  model = tf.keras.models.Sequential([\n",
+        "    tf.keras.layers.Flatten(input_shape=(HIST,COLS)),\n",
+        "    tf.keras.layers.Dense(100, activation='tanh'),\n",
+        "    tf.keras.layers.Dense(50, activation='tanh'),\n",
+        "    tf.keras.layers.Dense(COLS, activation='tanh')\n",
+        "  ])\n",
+        "\n",
+        "  model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])\n",
+        "\n",
+        "  mselst=[]\n",
+        "  for epoch in range(50):\n",
+        "    model.fit(train_x, train_y, epochs=1)\n",
+        "    y=model.predict(test_x)\n",
+        "    print(m, epoch, 'prediction MSE:', mean_squared_error(test_y, y))\n",
+        "    print(m, epoch, 'dummy MSE:', mean_squared_error(test_y[HIST:], test_y[HIST-1:-1]))\n",
+        "    mselst.append(mean_squared_error(test_y, y))\n",
+        "\n",
+        "  mselstlst.append(mselst)\n"
+      ],
+      "metadata": {
+        "id": "N_kseSHWqMmj"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(mselst)\n",
+        "print(mselstlst)\n",
+        "res=np.array(mselstlst)\n",
+        "print(res.shape)\n",
+        "print(np.mean(res))\n",
+        "print(np.mean(res, axis=1))\n",
+        "print(np.mean(res, axis=0))\n"
+      ],
+      "metadata": {
+        "id": "pUaWzKvJ5FSG"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from matplotlib import pyplot as plt\n",
+        "plt.plot(np.mean(res, axis=0),\"g.\")\n",
+        "plt.plot(np.min(res, axis=0),\"r.\")\n",
+        "plt.plot(np.max(res, axis=0),\"b.\")\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "xDh441Omx04y"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from matplotlib import pyplot as plt\n",
+        "plt.plot(np.mean(res, axis=0),\"g.\")\n",
+        "plt.plot(np.min(res, axis=0),\"r.\")\n",
+        "plt.plot(np.max(res, axis=0),\"b.\")\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "Nmvkkt3eP_6P"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for i in range(len(res)):\n",
+        "  plt.plot(res[i],\"g.\")\n",
+        "dummy=mean_squared_error(test_y[HIST:], test_y[HIST-1:-1])\n",
+        "plt.plot([dummy for _ in res[0]],\"r.\")\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "RpKWxpoDz9Yu"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "train_x2=train_x.reshape((train_x.shape[0], train_x.shape[1]*train_x.shape[2]))\n",
+        "test_x2=test_x.reshape((test_x.shape[0], test_x.shape[1]*test_x.shape[2]))\n",
+        "print(train_x2.shape, test_x2.shape)\n"
+      ],
+      "metadata": {
+        "id": "B-YGsdiCuXB8"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print('train with own simple MLP')\n",
+        "\n",
+        "import math, random, time\n",
+        "\n",
+        "# available activation functions\n",
+        "def activation_tanh(x):     return math.tanh(x)     # (-1..1)\n",
+        "def dactivation_tanh(x):    return 1.0 - x**2\n",
+        "def activation_sigmoid(x):  return 1.0/(1.0 + math.exp(-x))   # (0..1)\n",
+        "def dactivation_sigmoid(x): return x*(1.0-x)\n",
+        "\n",
+        "#acti, dacti = activation_sigmoid, dactivation_sigmoid\n",
+        "acti, dacti = activation_tanh, dactivation_tanh\n",
+        "\n",
+        "B = 1\n",
+        "#nn = [2+B, 4, 3, 3]\n",
+        "nn = [len(train_x2[0])+B, 20, 10, len(train_y[0])]\n",
+        "wl=[ [ [random.random()*0.4-0.2 for _ in range(nn[l])] for _ in range(nn[l+1])] for l in range(len(nn)-1)] \n",
+        "#wl = [ numpy.random.random((nn[l+1], nn[l]))*0.8-0.4 for l in range(len(nn)-1) ]\n",
+        "#wl = [numpy.linspace(-1,1,nn[l]*nn[l+1]).reshape((nn[l+1], nn[l])) for l in range(len(nn)-1)]\n",
+        "#          3\n",
+        "#[0, 0, 0, 1, 0, 0, 0, 0, 0, 0]\n",
+        "#                         8\n",
+        "#[0, 0, 0, 0, 0, 0, 0, 0, 1, 0]\n",
+        "epoch = 0\n",
+        "sumerr = len(train_x2)\n",
+        "# training\n",
+        "t00=time.time()\n",
+        "while sumerr/len(train_x2)/nn[-1]>=0.0001 and epoch<20:\n",
+        "    sumerr = 0.0\n",
+        "    epoch += 1\n",
+        "    t0=time.time()\n",
+        "    #for inp, out in random.sample(samples, len(samples)):\n",
+        "    for inp, out in zip(train_x2, train_y):\n",
+        "        nl = [ list(inp) + [1.0]*B ]\n",
+        "        for l in range(len(nn)-1):\n",
+        "            nl.append([acti(sum([nl[l][i] * wl[l][j][i] for i in range(nn[l])])) for j in range(nn[l+1])])\n",
+        "            \n",
+        "        error = [out[j] - nl[-1][j] for j in range(nn[-1])]\n",
+        "        delta = [None for _ in range(len(nn)-1)]\n",
+        "        for l in reversed(range(len(nn)-1)):\n",
+        "            if l == len(nn)-2:\n",
+        "                delta[l] = [error[j] * dacti(nl[-1][j]) for j in range(nn[-1])]\n",
+        "            else:\n",
+        "                delta[l] = [sum([delta[l+1][j] * wl[l+1][j][i] for j in range(nn[l+2])])*dacti(nl[l+1][i]) for i in range(nn[l+1])]\n",
+        "            \n",
+        "            for i in range(nn[l]):\n",
+        "                for j in range(nn[l+1]):\n",
+        "                    wl[l][j][i] += 0.01 * delta[l][j] * nl[l][i]\n",
+        "\n",
+        "        sumerr += sum( [error[j]**2 for j in range(nn[-1])])\n",
+        "    print (epoch,round(sumerr/len(train_x2)/nn[-1],3), round(time.time()-t0,3))\n",
+        "print (epoch,round(sumerr/len(train_x2)/nn[-1],3), round(time.time()-t00,3))\n",
+        "\n",
+        "#testing\n",
+        "y2=[]\n",
+        "#for inp, out in random.sample(samples, len(samples)):\n",
+        "for inp in test_x2:\n",
+        "    nl = [ list(inp) + [1.0]*B ]\n",
+        "    for l in range(len(nn)-1):\n",
+        "        nl.append([acti(sum([nl[l][i] * wl[l][j][i] for i in range(nn[l])])) for j in range(nn[l+1])])\n",
+        "        \n",
+        "    y2.append(nl[-1])\n",
+        "y2=np.array(y2)\n",
+        "print('prediction MSE:', mean_squared_error(test_y, y2))\n",
+        "print('dummy MSE:', mean_squared_error(test_y[1:], test_y[:-1]))\n",
+        "\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "yWdx51roTf_Z"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "a=[11,12,13,14,15]\n",
+        "b=[21,22,23,24,25]\n",
+        "[ (a,b) for a,b in zip(a,b) ]"
+      ],
+      "metadata": {
+        "id": "66n4eiVvaZfh"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "x=['x1','x2','x3','x4','x5']\n",
+        "y=['y1','y2','y3','y4','y5']\n",
+        "[ (_x,_y) for _x,_y in zip(x,y) ]"
+      ],
+      "metadata": {
+        "id": "NOHIX2tPXqAN"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print('train with own simple MLP vectorized')\n",
+        "import random, time\n",
+        "def activation_tanh(x):     return np.tanh(x)     # (-1..1)\n",
+        "def dactivation_tanh(x):    return 1.0 - x**2\n",
+        "def activation_sigmoid(x):  return 1.0/(1.0 + np.exp(-x))   # (0..1)\n",
+        "def dactivation_sigmoid(x): return x*(1.0-x)\n",
+        "\n",
+        "acti, dacti = activation_tanh, dactivation_tanh\n",
+        "\n",
+        "B = 1\n",
+        "nn = [len(train_x2[0])+B, 100, 50, len(train_y[0])]\n",
+        "wl = [ np.random.random((nn[l+1], nn[l]))*0.2-0.1 for l in range(len(nn)-1)] \n",
+        "#wl = [numpy.linspace(-1,1,nn[l]*nn[l+1]).reshape((nn[l+1], nn[l])) for l in range(len(nn)-1)]\n",
+        "delta = [np.zeros((nn[l+1])) for l in range(len(nn)-1)]\n",
+        "\n",
+        "epoch = 0\n",
+        "sumerr = len(train_x2)\n",
+        "t00=time.time()\n",
+        "while sumerr/len(train_x2)/nn[-1]>=0.0001 and epoch<20:\n",
+        "    sumerr = 0.0\n",
+        "    epoch += 1\n",
+        "    t0=time.time()\n",
+        "    #for inp, out in random.sample(samples, len(samples)):\n",
+        "    #for inp, out in zip(train_x2, train_y):\n",
+        "    for inp, out in random.sample([(a,b) for a,b in zip(train_x2, train_y)],len(train_x2)):\n",
+        "        nl = [ np.array(list(inp) + [1.0]*B) ]\n",
+        "        for l in range(len(nn)-1):\n",
+        "            nl.append(acti(np.dot(wl[l],nl[l])))\n",
+        "        error = out - nl[-1]\n",
+        "        #delta = [None for _ in range(len(nn)-1)]\n",
+        "        for l in reversed(range(len(nn)-1)):\n",
+        "            if l == len(nn)-2:\n",
+        "                #delta[l] = error*dacti(nl[-1])\n",
+        "                delta[l][:] = error*dacti(nl[-1])\n",
+        "            else:\n",
+        "                #delta[l] = numpy.dot(delta[l+1],wl[l+1])*dacti(nl[l+1])\n",
+        "                np.dot(delta[l+1],wl[l+1], out=delta[l])\n",
+        "                delta[l] *= dacti(nl[l+1])\n",
+        "            \n",
+        "            wl[l] += 0.01 * delta[l].reshape((nn[l+1],1))*nl[l].reshape((1,nn[l]))\n",
+        "\n",
+        "        sumerr += sum(error**2)\n",
+        "    print (epoch,round(sumerr/len(train_x2)/nn[-1],3), round(time.time()-t0,3))\n",
+        "print (epoch,round(sumerr/len(train_x2)/nn[-1],3), round(time.time()-t00,3))\n",
+        "\n",
+        "sumerr = 0.0\n",
+        "y2=[]\n",
+        "for inp in test_x2:\n",
+        "    nl = [ np.array(list(inp) + [1.0]*B) ]\n",
+        "    for l in range(len(nn)-1):\n",
+        "        nl.append(acti(np.dot(wl[l],nl[l])))\n",
+        "    y2.append(nl[-1])\n",
+        "y2=np.array(y2)\n",
+        "print('prediction MSE:', mean_squared_error(test_y, y2))\n",
+        "print('dummy MSE:', mean_squared_error(test_y[1:], test_y[:-1]))\n"
+      ],
+      "metadata": {
+        "id": "8sN8rV6vTiGQ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print('train with own simple MLP vectorized + momentum')\n",
+        "import random, time\n",
+        "\n",
+        "def activation_tanh(x):     return np.tanh(x)     # (-1..1)\n",
+        "def dactivation_tanh(x):    return 1.0 - x**2\n",
+        "def activation_sigmoid(x):  return 1.0/(1.0 + np.exp(-x))   # (0..1)\n",
+        "def dactivation_sigmoid(x): return x*(1.0-x)\n",
+        "\n",
+        "acti, dacti = activation_tanh, dactivation_tanh\n",
+        "\n",
+        "B=1\n",
+        "nn = [len(train_x2[0])+B, 100, 50, len(train_y[0])]\n",
+        "wl = [ np.random.random((nn[l+1], nn[l]))*0.2-0.1 for l in range(len(nn)-1)] \n",
+        "#wl = [numpy.linspace(-1,1,nn[l]*nn[l+1]).reshape((nn[l+1], nn[l])) for l in range(len(nn)-1)]\n",
+        "delta = [np.zeros((nn[l+1])) for l in range(len(nn)-1)]\n",
+        "cl = [np.zeros_like(_w) for _w in wl]\n",
+        "epoch = 0\n",
+        "sumerr = len(train_x2)\n",
+        "t00=time.time()\n",
+        "while sumerr/len(train_x2)>=0.0001 and epoch<20:\n",
+        "    sumerr = 0.0\n",
+        "    epoch += 1\n",
+        "    t0=time.time()\n",
+        "    #for inp, out in random.sample(samples, len(samples)):\n",
+        "    #for inp, out in zip(train_x2, train_y):\n",
+        "    for inp, out in random.sample([(a,b) for a,b in zip(train_x2, train_y)],len(train_x2)):\n",
+        "        nl = [ np.array(list(inp) + [1.0]*B) ]\n",
+        "        for l in range(len(nn)-1):\n",
+        "            nl.append(acti(np.dot(wl[l],nl[l])))\n",
+        "        error = out - nl[-1]\n",
+        "        #delta = [None for _ in range(len(nn)-1)]\n",
+        "        for l in reversed(range(len(nn)-1)):\n",
+        "            if l == len(nn)-2:\n",
+        "                #delta[l] = error*dacti(nl[-1])\n",
+        "                delta[l][:] = error*dacti(nl[-1])\n",
+        "            else:\n",
+        "                #delta[l] = numpy.dot(delta[l+1],wl[l+1])*dacti(nl[l+1])\n",
+        "                np.dot(delta[l+1],wl[l+1], out=delta[l])\n",
+        "                delta[l] *= dacti(nl[l+1])\n",
+        "            \n",
+        "            wl[l] += 0.2*cl[l]\n",
+        "            cl[l][:]=0.01 * delta[l].reshape((nn[l+1],1))*nl[l].reshape((1,nn[l]))\n",
+        "            wl[l] += 0.8*cl[l]\n",
+        "\n",
+        "        sumerr += sum( [error[j]**2 for j in range(nn[-1])])\n",
+        "    print (epoch,round(sumerr/len(train_x2)/nn[-1],3), round(time.time()-t0,3))\n",
+        "print (epoch,round(sumerr/len(train_x2)/nn[-1],3), round(time.time()-t00,3))\n",
+        "\n",
+        "sumerr = 0.0\n",
+        "y2=[]\n",
+        "#for inp, out in random.sample(samples, len(samples)):\n",
+        "for inp in test_x2:\n",
+        "    nl = [ np.array(list(inp) + [1.0]*B) ]\n",
+        "    for l in range(len(nn)-1):\n",
+        "        nl.append(acti(np.dot(wl[l],nl[l])))\n",
+        "    y2.append(nl[-1])\n",
+        "y2=np.array(y2)\n",
+        "print('prediction MSE:', mean_squared_error(test_y, y2))\n",
+        "print('stupid MSE:', mean_squared_error(test_y[1:], test_y[:-1]))\n"
+      ],
+      "metadata": {
+        "id": "BqMd5PhPxBwQ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for a, b in zip(test_y, y):\n",
+        "  for _a, _b in zip(a*70-35, b*70-35):\n",
+        "    print(round(_a,2), round(_b,2), end=\"; \")\n",
+        "  print()"
+      ],
+      "metadata": {
+        "id": "_AjW5-cC2OxX"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import random\n",
+        "def activation_sigmoid(x):  return 1.0/(1.0 + np.exp(-x))   # (0..1)\n",
+        "def dactivation_sigmoid(x): return x*(1.0-x)\n",
+        "\n",
+        "def f(x):\n",
+        "    for _x in x:\n",
+        "      y=activation_sigmoid(_x)\n",
+        "\n",
+        "x=[random.random()*10-5 for _ in range(100)]\n",
+        "g=np.arange(-16,17)\n",
+        "gg=1.0/(1.0 + np.exp(-g)).astype(np.float64)\n",
+        "gd=gg[1:]-gg[:-1]\n",
+        "\n",
+        "def activation_sigmoid_pcw(x):\n",
+        "  b=np.floor(x).astype(np.int32)\n",
+        "  d=x-b\n",
+        "  return gg[b+17]*d+gg[b+16]*(1-d)\n",
+        "\n",
+        "def activation_sigmoid_pcw2(x):\n",
+        "  b=np.floor(x).astype(np.int32)\n",
+        "  d=x-b\n",
+        "  return gg[b+16]+gd[b+17]*(1.0-d)\n",
+        "\n",
+        "def f2(x):\n",
+        "    for _x in x:\n",
+        "      y=activation_sigmoid_pcw(_x)"
+      ],
+      "metadata": {
+        "id": "7ZnQ2YVE0Jj3"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "x=np.linspace(-5,5,1000)\n"
+      ],
+      "metadata": {
+        "id": "5V5NzG3_00EH"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "timeit activation_sigmoid(x)\n"
+      ],
+      "metadata": {
+        "id": "sJOlLEL91MOB"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "timeit activation_sigmoid_pcw(x)"
+      ],
+      "metadata": {
+        "id": "DulSRDWkywz2"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "IJm3yHKp1fpf"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "g=np.arange(-16,17)\n",
+        "gg=1.0/(1.0 + np.exp(-g))\n",
+        "x=2.5\n",
+        "b=np.floor(x).astype(np.int32)\n",
+        "print(b)\n",
+        "d=x-b\n",
+        "r=gg[b+17]*d+gg[b+16]*(1-d)\n",
+        "print(r, 1.0/(1.0 + np.exp(-int(x))), 1.0/(1.0 + np.exp(-x)))"
+      ],
+      "metadata": {
+        "id": "UhHLve_CwZff"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from matplotlib import pyplot as plt\n",
+        "plt.rcParams['figure.figsize'] = [16, 8]"
+      ],
+      "metadata": {
+        "id": "GhvVHMmzuA8z"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "x=np.linspace(-5,5,100)\n",
+        "y=1.0/(1.0 + np.exp(-x))\n",
+        "y2=activation_sigmoid_pcw(x)\n",
+        "plt.plot(x,y,\".\")\n",
+        "plt.plot(x,y2,\".\")\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "G1wpnM1xuxjI"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
