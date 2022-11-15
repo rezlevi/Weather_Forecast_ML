@@ -1,5 +1,5 @@
 ## 1. Áttekintés
-
+Egy olyan Machine Learning algoritmus készítése a célunk, ami jelenlegi időjárási tényezők segítségével eredményül ad egy időjárás előrejelzést. Az algoritmust ellenőrizni és elemezni is fogjuk, a lehető legjobban működő verzió megtalálása érdekében.
 
 ## 2. Jelenlegi helyzet
 
