@@ -3,7 +3,16 @@
 A rendszer célja Machine Learning segítségével megvalósítandó időjárás előrejelzés program lenne, ami egy előre megadott pl. csv file és az abban lévő adatokból próbál egy sémát találni és annak segítségével előre jelezni az időjárást. Ebben a rendszerben a megrendelő nem kérte, hogy legyen GUI vagy egyéb féle felhasználói felület, elég a Google Colab-os felület, futtatható kódblokkokkal. Felhasználókezelés nincs, aki hozzáfér a Colab füzethez, az tudja futtatni a programot.
 
 ## Projektterv
- 
+Felelősségek, feladatok:
+ - Adatkészlet keresése és importálása: Benke Balázs, Stanga Péter István
+ - Adatkészlet előkészítése: Réz Levente, Benke Balázs Bálint
+ - Machine Learning Modell kiválasztása: Benke Balázs Bálint, Réz Levente, Stanga Péter István
+ - Machine Learning Modell implementálása: Benke Balázs Bálint, Réz Levente, Stanga Péter István
+ - Machine Learning Modell Tréningje: Benke Balázs Bálint, Réz Levente, Stanga Péter István
+ - Machine Learning Modell Evaluációja: Réz Levente, Stanga Péter István
+ - Grafikonok és eredmények készítése/szerkesztése: Réz Levente
+ - Tesztelés: Benke Balázs Bálint, Réz Levente, Stanga Péter István
+
 
 ## Követelmények
 - K01 Google Colab felületen kell készülnie a projektnek
