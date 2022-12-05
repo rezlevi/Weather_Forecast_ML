@@ -32,6 +32,14 @@ A program a colab.research.google segítségével fog készülni, ahol a TensorF
 
 
 ## Funkcionális terv
+
+ - Rendszerszereplők:
+   - Fejlesztő
+      - Adott esetben bővíti, módosítja az algoritmmust.
+   - Karbantartó
+      - Karbantartja rendszert, ellenőrzi a kimenetet és adott esetben elhárítja a bemenet-kimeneti hibákat
+   - Felhasználó
+      - Jogosultsága van a kimeneti adatok felhasználásához.
    
 ## Adatbázis terv leírása
 A szoftver fejlesztése során egy hőmérsékleti adatokat tároló adatbázist fogunk használni.
